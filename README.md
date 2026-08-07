@@ -1,12 +1,15 @@
 # Control de motor Paso a Paso con Arduino
+
 <p align="center">
 <img src="media/UTN-logo.png" alt="UTN-logo" width="200" style="display: block; margin: 5 auto"/>
 </p>
+
 <div style="text-align:center">
 UTN.FRBA - Ingeniería Electrónica   
-</div>
-**Autor:** Iván Yopolo.   
-**Co-autor y docente a cargo:** Oscar Pugliese.   
+</div>    
+
+**Autor:** Iván Yopolo.     
+**Co-autor y docente a cargo:** Oscar Pugliese.      
 
 ---
 
