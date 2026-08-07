@@ -100,6 +100,10 @@ void MarchaTrasera();
 void CambiarMarcha() {
     sentidoDeGiro++;
     sentidoDeGiro %= 2;
+    
+	Serial.print( "# Sentido = " );
+	Serial.print( sentidoDeGiro );
+	Serial.print( " #\n\n" );
 }
 
 
@@ -111,6 +115,10 @@ void CambiarMarcha() {
 void CambiarEstado() {
     estadoMotor++;
     estadoMotor %= 2;
+    
+	Serial.print( "# Estado = " );
+	Serial.print( estadoMotor );
+	Serial.print( " #\n\n" );
 }
 
 
@@ -119,8 +127,9 @@ void CambiarEstado() {
 // ##########################################
 /* Lee datos del potenciómetro y los traduce a frecuencia. 
  */
-int LeerPotAFrec() {
-    return ( map( analogRead( PIN__POT ), 0, 1023, 0, MAX_FREQ ) );
+uint32_t LeerPotAFrec() {
+    return ( map( analogRead( PIN__POT ), 0, 1023, MIN_DELAY_MS, MAX_DELAY_MS ) );
+    //~ return ( map( analogRead( PIN__POT ), 0, 1023, 0, 10000 ) );
 }
 
 
@@ -130,24 +139,15 @@ int LeerPotAFrec() {
 /* Frena el motor.
  */
 void Stop() {
+	// Serial.print( "> Parando...\n" );
+	
 	digitalWrite( PIN__A1, LOW );
 	digitalWrite( PIN__B1, LOW );
 	digitalWrite( PIN__A2, LOW );
 	digitalWrite( PIN__B2, LOW ); 
+	
+	// Serial.print( "> Motor parado.\n\n" );
 }
-
-
-// ##########################################
-// CargarMatrizSecuencia
-// ##########################################
-/* Carga la matriz de entrada (secuencia) con funciones
- * para apuntar. 2 funciones distintas.
- */
-// # HACER MÁSCARAS DE BIT #
-//~ void CargarMatrizSecuencia( volatile void ( *secuenciaInput )( void ) ) {
-    //~ secuenciaInput[ADELANTE] = MarchaDelantera;
-    //~ secuenciaInput[ATRAS] = MarchaTrasera;
-//~ }
 
 
 // ##########################################
@@ -160,12 +160,15 @@ void Stop() {
  */
 void Marcha() {
 	
-	if ( tAct >= tBobinas + millis() ) {
+	if ( tAct + tBobinas <= millis() ) {
+		Serial.print( "> Cambio de bobina...\n" );
 		
 		if ( __bitMask & (1 << 0) ) {			// 0x1 = 0b0001
 			digitalWrite( PIN__A1, HIGH );
+			digitalWrite( LED_BUILTIN, HIGH );	// DEBUG
 		} else {
 			digitalWrite( PIN__A1, LOW );
+			digitalWrite( LED_BUILTIN, LOW );
 		}
 		
 		if ( __bitMask & (1 << 1) ) {			// 0x2 = 0b0010
@@ -231,7 +234,7 @@ void ShiftMask() {
 		case ADELANTE:
 			__bitMask = __bitMask << 1;
 			
-			if ( !__bitMask )		// Generalmente, se toma siempre el 0 como falso.
+			if ( __bitMask >= MAX_MASK_VALUE )	// Superó el rango máximo de máscara.
 				__bitMask = 0b0001;
 				//~ __bitMask = 0x1;	// Alternativa por si el compilador no reconoce el formato en binario "AbCCCC".
 		break;
@@ -240,11 +243,15 @@ void ShiftMask() {
 		case ATRAS:
 			__bitMask = __bitMask >> 1;
 			
-			if ( !__bitMask )
+			if ( !__bitMask )			// Generalmente, se toma siempre el 0 como falso.
 				__bitMask = 0b1000;
 				//~ __bitMask = 0x8;
 		break; 
 	}
+	
+	Serial.print( "> Nueva máscara de bits = 0x" );
+	Serial.print( __bitMask, HEX );
+	Serial.print( "\n\n" );
 }
 
 

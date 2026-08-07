@@ -31,7 +31,10 @@
     
     // # Parámetros de tiempo #
     #define 	MAX_FREQ		50					// 50 Hz
+    #define		MIN_DELAY_MS	(1000/MAX_FREQ)
+    #define		MAX_DELAY_MS	1000
     #define 	T_BOBINAS		(1/(8 * MAX_FREQ))	// T = 8t  =>  t = 1/8 T  =>  t = 1/8 1/F  =>  t = 1/400
+    #define		MAX_MASK_VALUE	0b10000
 
     typedef enum direccion_e {
         ADELANTE = 0,
@@ -56,12 +59,12 @@
     // # ISR: Interrupt Service Routine (función asincrónica) #
     //~ void    CambiarMarchaAdelante();
     //~ void    CambiarMarchaAtras();
-    void    CambiarMarcha();
-    void	CambiarEstado();
+    void    	CambiarMarcha();
+    void		CambiarEstado();
 
-    int   	LeerPotAFrec();
-    void	Stop();
-    void	Marcha();
+    uint32_t	LeerPotAFrec();
+    void		Stop();
+    void		Marcha();
 
     //void    A();    // Hace la lógica de si incrementa o decrementa el índice, reiniciando correspondientemente.
     //void    B();    // Manda la señal las bobinas correspondientes.
