@@ -47,25 +47,20 @@
     } estado_t;
 
     // # GLOBAL #
-    extern uint8_t				sentidoDeGiro;
-    extern uint32_t				tBobinas;
-    extern uint32_t 			tAct;
-    extern uint8_t				estadoMotor;
-
+    extern uint8_t				sentidoDeGiro;		// Los tipos de datos uint8_t, uint32_t, int8_t, etc, son enteros que 
+    extern uint32_t				tBobinas;			// pueden ser signados o no, según el prefijo "u". Sirven para asignar
+    extern uint32_t 			tAct;				// datos de un tamaño fijo, sin variar según implementación.
+    extern uint8_t				estadoMotor;		// Pensar que no todos los sistemas definen al "int" o el tamaño de un puntero
+													// del mismo tamaño; mucho menos en antaño.
 
     // ##########################################
     // ### FUNCIONES & RUTINAS PÚBLICAS ###
     // ##########################################
     // # ISR: Interrupt Service Routine (función asincrónica) #
-    //~ void    CambiarMarchaAdelante();
-    //~ void    CambiarMarchaAtras();
     void    	CambiarMarcha();
     void		CambiarEstado();
 
     uint32_t	LeerPotAFrec();
     void		Stop();
     void		Marcha();
-
-    //void    A();    // Hace la lógica de si incrementa o decrementa el índice, reiniciando correspondientemente.
-    //void    B();    // Manda la señal las bobinas correspondientes.
 #endif

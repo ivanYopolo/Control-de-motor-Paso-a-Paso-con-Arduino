@@ -33,7 +33,7 @@ void setup() {
     estadoMotor = APAGADO;
 
     pinMode( LED_BUILTIN, OUTPUT );
-    digitalWrite( LED_BUILTIN, LOW );
+    digitalWrite( LED_BUILTIN, LOW );           // DEBUG.
 
 	tAct = millis();
     tBobinas = LeerPotAFrec();
@@ -58,10 +58,6 @@ void loop() {
         case ENCENDIDO:
             tBobinas = LeerPotAFrec();
             Marcha();
-
-            // Serial.print( "> tBobinas = " );
-            // Serial.print( tBobinas );
-            // Serial.print( " s\n" );
         break;
     }
 }
